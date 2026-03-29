@@ -13,9 +13,14 @@ st.set_page_config(
 # ── Load Data ────────────────────────────────────────
 @st.cache_data
 def load_data():
-    df = pd.read_csv('data/superstore_clean.csv')
+    df = pd.read_csv('data/superstore.csv', encoding='latin-1')
     df['Order Date'] = pd.to_datetime(df['Order Date'], format='mixed')
     df['Ship Date']  = pd.to_datetime(df['Ship Date'],  format='mixed')
+    df['Order Year']    = df['Order Date'].dt.year
+    df['Order Month']   = df['Order Date'].dt.to_period('M').astype(str)
+    df['Order Quarter'] = df['Order Date'].dt.quarter.apply(lambda q: f"Q{q}")
+    df['Profit Margin'] = (df['Profit'] / df['Sales'] * 100).round(2)
+    df['Shipping Days'] = (df['Ship Date'] - df['Order Date']).dt.days
     return df
 
 # ── Sidebar Filters ──────────────────────────────────
