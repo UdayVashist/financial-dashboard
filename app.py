@@ -3,14 +3,12 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-# ── Config ──────────────────────────────────────────
 st.set_page_config(
     page_title="Financial Performance Dashboard",
     page_icon="📊",
     layout="wide"
 )
 
-# ── Load Data ────────────────────────────────────────
 @st.cache_data
 def load_data():
     df = pd.read_csv('data/superstore.csv', encoding='latin-1')
@@ -23,6 +21,7 @@ def load_data():
     df['Shipping Days'] = (df['Ship Date'] - df['Order Date']).dt.days
     return df
 
+df = load_data()
 # ── Sidebar Filters ──────────────────────────────────
 st.sidebar.title("Filters")
 years      = st.sidebar.multiselect("Year",     sorted(df['Order Year'].unique()),    default=sorted(df['Order Year'].unique()))
